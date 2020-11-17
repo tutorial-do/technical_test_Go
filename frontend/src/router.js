@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import AppHeader from './layout/AppHeader.vue';
+import AppFooter from './layout/AppFooter.vue';
+import Page404 from './views/Page404.vue';
 import Home from './views/Home.vue';
-import About from './views/About.vue';
 
 Vue.use(VueRouter);
 
@@ -9,12 +11,20 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    components: {
+      header: AppHeader,
+      default: Home,
+      footer: AppFooter,
+    },
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About,
+    path: '*',
+    name: '404',
+    components: {
+      header: AppHeader,
+      default: Page404,
+      footer: AppFooter,
+    },
   },
 ];
 
