@@ -7,15 +7,22 @@
             />
           </div>
           <div class="col-md-4">
+            <BuyerInfo />
+          </div>
+          <div class="col-md-4">
             <LoadData />
           </div>
           <div class="col-md-4">
-            <Transactions />
+            <Transactions
+            :data="allTransactions"
+            />
           </div>
       </div>
       <div class="row">
           <div class="col-12">
-            <Products />
+            <Products
+            :data="allProducts"
+            />
           </div>
       </div>
   </div>
@@ -23,6 +30,7 @@
 
 <script>
 import AllBuyers from '@/components/Home/AllBuyers.vue';
+import BuyerInfo from '@/components/Home/BuyerInfo.vue';
 import Transactions from '@/components/Home/Transactions.vue';
 import Products from '@/components/Home/Products.vue';
 import { mapState } from 'vuex';
@@ -32,6 +40,7 @@ export default {
   name: 'Home',
   components: {
     AllBuyers,
+    BuyerInfo,
     LoadData,
     Products,
     Transactions,
@@ -41,9 +50,13 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchAllBuyers');
+    this.$store.dispatch('fetchAllProducts');
+    this.$store.dispatch('fetchAllTransactions');
   },
   computed: mapState({
     allBuyers: (state) => state.allBuyers,
+    allProducts: (state) => state.allProducts,
+    allTransactions: (state) => state.allTransactions,
   }),
 };
 

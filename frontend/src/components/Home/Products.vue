@@ -7,6 +7,15 @@
           elevation="5"
           >
           <h1>PRODUCTS</h1>
+          <ul class="sidebar-group-items">
+            <li
+              v-for="(item, index) in data"
+              :key="index"
+            >
+              {{ item.name }}
+              ${{ item.price }}
+            </li>
+          </ul>
           </v-card>
         </div>
       </div>
@@ -16,6 +25,18 @@
 <script>
 export default {
   name: 'Products',
+  props: {
+    data: {
+      type: [Array, String],
+      default: '',
+      required: false,
+    },
+  },
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {},
 };
 </script>
 <style scoped lang="scss">

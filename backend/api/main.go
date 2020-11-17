@@ -33,9 +33,15 @@ func main() {
 	router.Route("/allbuyers", func(r chi.Router) {
 		r.Get("/", routes.GetAllBuyers(dbConnection))
 	})
+	router.Route("/allproducts", func(r chi.Router) {
+		r.Get("/", routes.GetAllProducts(dbConnection))
+	})
+	router.Route("/alltransactions", func(r chi.Router) {
+		r.Get("/", routes.GetAllTransactions(dbConnection))
+	})
 
 	defer dbclose()
 
-	fmt.Println("the service is running")
+	fmt.Println("the service is running on port 3000")
 	http.ListenAndServe(":3000", router)
 }

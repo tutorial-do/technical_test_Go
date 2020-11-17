@@ -52,6 +52,7 @@ func DataLoader(dbConnection *dgo.Dgraph) http.HandlerFunc {
 	}
 }
 
+// GetAllBuyers functions to retrieve all buyers from the database
 func GetAllBuyers(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
@@ -72,6 +73,56 @@ func GetAllBuyers(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 		// w.Write([]byte("welcome"))
+		w.Write(res.Json)
+	}
+}
+
+// GetAllProducts functions to retrieve all products from the database
+func GetAllProducts(dgraphClient *dgo.Dgraph) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.Background()
+		q := `{
+			allProducts(func: type(Product)){
+				id
+				name
+				price
+			}
+		}`
+
+		txn := dgraphClient.NewTxn()
+
+		defer txn.Discard(ctx)
+
+		res, err := txn.Query(ctx, q)
+		if err != nil {
+			log.Fatal(err)
+		}
+		w.Write(res.Json)
+	}
+}
+
+// GetAllProducts functions to retrieve all products from the database
+func GetAllTransactions(dgraphClient *dgo.Dgraph) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.Background()
+		q := `{
+			allTransactions(func: type(Transaction)){
+				id
+    		buyerID
+    		ip
+    		device
+    		productsIDs
+			}
+		}`
+
+		txn := dgraphClient.NewTxn()
+
+		defer txn.Discard(ctx)
+
+		res, err := txn.Query(ctx, q)
+		if err != nil {
+			log.Fatal(err)
+		}
 		w.Write(res.Json)
 	}
 }
