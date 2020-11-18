@@ -7,16 +7,35 @@
           elevation="5"
           >
           <h1>TRANSACTIONS</h1>
-          <ul class="sidebar-group-items">
+          <!-- {{ transactionsByBuyerID }} -->
+          <v-data-table
+            :headers="headers"
+            :items="transactionsByBuyerID"
+            :items-per-page="5"
+            class="elevation-1"
+          >
+          <template v-slot:item.select="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="setterTransaction(item.productsIDs)"
+            >
+              Select to display
+            </v-icon>
+          </template>
+          </v-data-table>
+
+          <!-- <ul class="sidebar-group-items">
             <li
-              v-for="(item, index) in data"
+              v-for="(item, index) in transactionsByBuyerID"
               :key="index"
             >
+              {{ item.id }}
               {{ item.buyerID }}
               {{ item.device }}
-              {{ item.ProductsIDs }}
+              {{ item.productsIDs }}
             </li>
-          </ul>
+          </ul> -->
           </v-card>
         </div>
       </div>
@@ -24,6 +43,9 @@
   </section>
 </template>
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
   name: 'Transactions',
   props: {
@@ -34,10 +56,31 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      headers: [
+        {
+          text: 'Transaction ID',
+          align: 'start',
+          sortable: false,
+          value: 'id',
+        },
+        { text: 'Device', value: 'device' },
+        { text: 'IP', value: 'ip' },
+        { text: 'Buyer ID', value: 'buyerID' },
+        { text: 'Products', value: 'productsIDs' },
+        { text: 'Selector', value: 'select', sortable: false },
+      ],
+    };
   },
+  computed: mapState({
+    transactionsByBuyerID: (state) => state.transactionsByBuyerID,
+  }),
   mounted() {},
-  methods: {},
+  methods: {
+    setterTransaction(currentProductsIDs) {
+      this.$store.dispatch('getProductsByTransaction', currentProductsIDs);
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

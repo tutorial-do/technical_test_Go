@@ -7,15 +7,32 @@
             elevation="5"
           >
           <h1>ALL BUYERS</h1>
-          <ul class="sidebar-group-items">
+          <v-data-table
+            :headers="headers"
+            :items="data"
+            :items-per-page="5"
+            class="elevation-1"
+          >
+          <template v-slot:item.select="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="setterBuyer(item.name, item.id, item.age)"
+            >
+              Select to display
+            </v-icon>
+          </template>
+          </v-data-table>
+          <!-- <ul class="sidebar-group-items">
             <li
-              v-for="(item, index) in data"
-              :key="index"
+              v-for='(item, index) in data'
+              :key='index'
+              @click='setterBuyer(item.name, item.id, item.age)'
             >
               {{ item.name }}
               {{ item.age }}
             </li>
-          </ul>
+          </ul> -->
           </v-card>
         </div>
       </div>
@@ -34,10 +51,29 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      headers: [
+        {
+          text: 'Name',
+          align: 'start',
+          sortable: false,
+          value: 'name',
+        },
+        { text: 'ID', value: 'id' },
+        { text: 'Age', value: 'age' },
+        { text: 'Selector', value: 'select', sortable: false },
+      ],
+    };
   },
-  mounted() {},
-  methods: {},
+  methods: {
+    setterBuyer(BuyerName, BuyerID, BuyerAge) {
+      this.$store.dispatch('setCurrentBuyer', {
+        name: BuyerName,
+        id: BuyerID,
+        age: BuyerAge,
+      });
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

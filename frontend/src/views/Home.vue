@@ -7,7 +7,9 @@
             />
           </div>
           <div class="col-md-4">
-            <BuyerInfo />
+            <BuyerInfo
+            :data="activeBuyer"
+            />
           </div>
           <div class="col-md-4">
             <LoadData />
@@ -17,12 +19,17 @@
             :data="allTransactions"
             />
           </div>
-      </div>
-      <div class="row">
-          <div class="col-12">
-            <Products
-            :data="allProducts"
-            />
+          <div class="row">
+              <div class="col-12">
+                <ProductsByTransaction />
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                <Products
+                :data="allProducts"
+                />
+              </div>
           </div>
       </div>
   </div>
@@ -33,6 +40,7 @@ import AllBuyers from '@/components/Home/AllBuyers.vue';
 import BuyerInfo from '@/components/Home/BuyerInfo.vue';
 import Transactions from '@/components/Home/Transactions.vue';
 import Products from '@/components/Home/Products.vue';
+import ProductsByTransaction from '@/components/Home/ProductsByTrans.vue';
 import { mapState } from 'vuex';
 import LoadData from '../components/Home/LoadData.vue';
 
@@ -43,6 +51,7 @@ export default {
     BuyerInfo,
     LoadData,
     Products,
+    ProductsByTransaction,
     Transactions,
   },
   data() {
@@ -57,6 +66,7 @@ export default {
     allBuyers: (state) => state.allBuyers,
     allProducts: (state) => state.allProducts,
     allTransactions: (state) => state.allTransactions,
+    activeBuyer: (state) => state.activeBuyer,
   }),
 };
 

@@ -6,14 +6,14 @@
           <v-card
           elevation="5"
           >
-          <h1>RECOMENDED PRODUCTS</h1>
+          <h1>PRODUCTS BY TRANSACTION</h1>
           <v-data-table
             :headers="headers"
-            :items="data"
+            :items="productsByTransaction"
             :items-per-page="5"
             class="elevation-1"
           ></v-data-table>
-          <!-- <ul class="sidebar-group-items">
+          <ul class="sidebar-group-items">
             <li
               v-for="(item, index) in data"
               :key="index"
@@ -21,7 +21,7 @@
               {{ item.name }}
               ${{ item.price }}
             </li>
-          </ul> -->
+          </ul>
           </v-card>
         </div>
       </div>
@@ -29,8 +29,11 @@
   </section>
 </template>
 <script>
+
+import { mapState } from 'vuex';
+
 export default {
-  name: 'Products',
+  name: 'ProductsByTransaction',
   props: {
     data: {
       type: [Array, String],
@@ -52,6 +55,9 @@ export default {
       ],
     };
   },
+  computed: mapState({
+    productsByTransaction: (state) => state.productsByTransaction,
+  }),
   mounted() {},
   methods: {},
 };
