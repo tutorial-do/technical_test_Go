@@ -30,6 +30,9 @@ func main() {
 	router.Route("/load", func(r chi.Router) {
 		r.Get("/", routes.DataLoader(dbConnection))
 	})
+	router.Route("/load/{date}", func(r chi.Router) {
+		r.Get("/", routes.DataLoader(dbConnection))
+	})
 	router.Route("/allbuyers", func(r chi.Router) {
 		r.Get("/", routes.GetAllBuyers(dbConnection))
 	})

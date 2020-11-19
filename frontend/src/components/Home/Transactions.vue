@@ -14,7 +14,9 @@
             :items-per-page="5"
             class="elevation-1"
           >
-          <template v-slot:item.select="{ item }">
+          <template
+          v-slot:item.select="{ item }"
+          >
             <v-icon
               small
               class="mr-2"

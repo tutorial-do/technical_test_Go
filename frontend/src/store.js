@@ -51,6 +51,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async loadData(context, date) {
+      try {
+        await axios.get(`http://localhost:3000/load/${date}`);
+        context.dispatch('fetchAllBuyers');
+        context.dispatch('fetchAllProducts');
+        context.dispatch('fetchAllTransactions');
+      } catch (error) {
+        console.log(error);
+      }
+    },
     setCurrentBuyer(context, payload) {
       const currentBuyerID = payload.id;
       context.dispatch('getTransactionsByBuyerID', currentBuyerID);

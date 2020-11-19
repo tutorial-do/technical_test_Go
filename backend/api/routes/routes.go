@@ -9,12 +9,13 @@ import (
 	"technical_test_Go/backend/storage"
 
 	"github.com/dgraph-io/dgo"
+	"github.com/go-chi/chi"
 )
 
 // DataLoader function to load the data from the endpoints
 func DataLoader(dbConnection *dgo.Dgraph) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		date := ""
+		date := chi.URLParam(r, "date")
 		dataBuyers, dataProducts, dataTransactions := handlers.FetchData(date)
 
 		// UniqueBuyers, UniqueProducts, UniqueTransactions, err := handlers.Strainer(dbConnection, dataBuyers, dataProducts, dataTransactions)
