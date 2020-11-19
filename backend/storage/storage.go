@@ -34,8 +34,6 @@ func SaveData(dgraphClient *dgo.Dgraph, dataJSON []byte) error {
 
 	txn := dgraphClient.NewTxn()
 
-	defer txn.Discard(ctx)
-
 	mu := &api.Mutation{
 		SetJson: dataJSON,
 	}
