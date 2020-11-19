@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	// "context"
 	"encoding/csv"
 	"encoding/json"
 	"io/ioutil"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"technical_test_Go/backend/models"
 	"time"
+	// "github.com/dgraph-io/dgo"
 )
 
 const (
@@ -39,7 +41,7 @@ func timeConversor(date string) string {
 }
 
 // FetchData is a function to that gets and retrieves all data from the endpoints
-func FetchData(date string) (buyersList, productsList, transactionsList) {
+func FetchData(date string) (buyersList []models.Buyer, productsList []models.Product, transactionsList []models.Transaction) {
 
 	dateTime := timeConversor(date)
 
@@ -168,3 +170,38 @@ func fetchTransactionsData(dateTime string) ([]models.Transaction, error) {
 
 	return allTransactions, nil
 }
+
+// Strainer to check for repeated data already in the database
+// func Strainer(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProducts []models.Product, dataTransactions []models.Transaction) {
+// 	UniqueBuyers, err := strainerBuyers()
+// 	UniqueProducts, err := strainerProducts()
+// 	UniqueTransactions, err := strainerTransactions()
+// }
+
+// func strainerBuyers(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer) ([]models.Buyer, error) {
+// 	ctx := context.Background()
+// 	q := `{
+// 			allBuyers(func: type(Buyer)){
+// 				id
+// 				name
+// 				age
+// 			}
+// 		}`
+
+// 	txn := dgraphClient.NewTxn()
+
+// 	defer txn.Discard(ctx)
+
+// 	var
+
+// 	res, err := txn.Query(ctx, q)
+// 	if err != nil {
+// 		return ,
+// 	}
+// 	res.allBuyers
+
+// }
+// func strainerProducts(dgraphClient *dgo.Dgraph, dataProducts []models.Product) ([]models.Product, error) {
+// }
+// func strainerTransactions(dgraphClient *dgo.Dgraph, dataTransactions []models.Transaction) ([]models.Transaction, error) {
+// }

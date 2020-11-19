@@ -6,7 +6,7 @@
           <v-card
           elevation="5"
           >
-          <h1>TRANSACTIONS</h1>
+          <h1>Transactions of Buyer: {{ activeBuyer.name }}</h1>
           <!-- {{ transactionsByBuyerID }} -->
           <v-data-table
             :headers="headers"
@@ -18,7 +18,8 @@
             <v-icon
               small
               class="mr-2"
-              @click="setterTransaction(item.productsIDs)"
+              @click="setterTransaction(item.productsIDs)
+                      setterDevice(item.ip)"
             >
               Select to display
             </v-icon>
@@ -74,11 +75,15 @@ export default {
   },
   computed: mapState({
     transactionsByBuyerID: (state) => state.transactionsByBuyerID,
+    activeBuyer: (state) => state.activeBuyer,
   }),
   mounted() {},
   methods: {
     setterTransaction(currentProductsIDs) {
       this.$store.dispatch('getProductsByTransaction', currentProductsIDs);
+    },
+    setterDevice(ipAddress) {
+      this.$store.dispatch('getBuyersByIP', ipAddress);
     },
   },
 };

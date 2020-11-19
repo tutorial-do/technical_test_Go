@@ -1,35 +1,36 @@
 <template>
   <div class="container container--fluid">
       <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <AllBuyers
             :data="allBuyers"
             />
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <BuyerInfo
             :data="activeBuyer"
             />
-          </div>
-          <div class="col-md-4">
             <LoadData />
           </div>
-          <div class="col-md-4">
+      </div>
+      <div class="row">
+          <div class="col-md-6">
             <Transactions
             :data="allTransactions"
             />
           </div>
-          <div class="row">
-              <div class="col-12">
-                <ProductsByTransaction />
-              </div>
+          <div class="col-3">
+            <ProductsByTransaction />
           </div>
-          <div class="row">
-              <div class="col-12">
-                <Products
-                :data="allProducts"
-                />
-              </div>
+          <div class="col-3">
+            <BuyersByIP />
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-12">
+            <Products
+            :data="allProducts"
+            />
           </div>
       </div>
   </div>
@@ -38,6 +39,7 @@
 <script>
 import AllBuyers from '@/components/Home/AllBuyers.vue';
 import BuyerInfo from '@/components/Home/BuyerInfo.vue';
+import BuyersByIP from '@/components/Home/BuyersByIP.vue';
 import Transactions from '@/components/Home/Transactions.vue';
 import Products from '@/components/Home/Products.vue';
 import ProductsByTransaction from '@/components/Home/ProductsByTrans.vue';
@@ -49,6 +51,7 @@ export default {
   components: {
     AllBuyers,
     BuyerInfo,
+    BuyersByIP,
     LoadData,
     Products,
     ProductsByTransaction,

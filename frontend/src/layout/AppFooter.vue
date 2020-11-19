@@ -2,7 +2,6 @@
   <v-footer
     dark
     padless
-    absolute
   >
     <v-card
       flat

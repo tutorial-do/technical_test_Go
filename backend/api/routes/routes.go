@@ -17,6 +17,11 @@ func DataLoader(dbConnection *dgo.Dgraph) http.HandlerFunc {
 		date := ""
 		dataBuyers, dataProducts, dataTransactions := handlers.FetchData(date)
 
+		// UniqueBuyers, UniqueProducts, UniqueTransactions, err := handlers.Strainer(dbConnection, dataBuyers, dataProducts, dataTransactions)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+
 		buyerJSON, err := json.Marshal(dataBuyers)
 		if err != nil {
 			log.Fatal(err)
@@ -26,17 +31,20 @@ func DataLoader(dbConnection *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
+		// productJSON, err := json.Marshal(UniqueProducts)
 		productJSON, err := json.Marshal(dataProducts)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		err = storage.SaveData(dbConnection, productJSON)
+		// err = storage.SaveData(dbConnection, productJSON)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		transactionJSON, err := json.Marshal(dataTransactions)
+		// transactionJSON, err := json.Marshal(UniqueTransactions)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -46,9 +54,15 @@ func DataLoader(dbConnection *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
+		// function to connect the data
+		// ConnectData(dbConnection, dataBuyers, dataProducts, dataTransactions)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 		// w.Write(buyerJSON)
 		// w.Write(productJSON)
 		// w.Write(transactionJSON)
+		w.Write([]byte("Data succesfully loaded"))
 	}
 }
 
@@ -72,7 +86,7 @@ func GetAllBuyers(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// w.Write([]byte("welcome"))
+
 		w.Write(res.Json)
 	}
 }

@@ -6,7 +6,7 @@
           <v-card
           elevation="5"
           >
-          <h1>PRODUCTS BY TRANSACTION</h1>
+          <h1>Products By Transaction</h1>
           <v-data-table
             :headers="headers"
             :items="productsByTransaction"

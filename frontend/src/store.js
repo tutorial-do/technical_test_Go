@@ -17,6 +17,8 @@ export default new Vuex.Store({
     },
     transactionsByBuyerID: [],
     productsByTransaction: [],
+    buyersIP: [],
+    currentIP: '',
   },
   mutations: {
     SET_ALL_BUYERS(state, buyers) {
@@ -41,6 +43,12 @@ export default new Vuex.Store({
     SET_TRANSACTIONS_BY_BUYER: (state, transactionsByBuyerID) => {
       state.transactionsByBuyerID = transactionsByBuyerID;
     },
+    SET_BUYERS_BY_IP: (state, buyersByIP) => {
+      state.buyersIP = buyersByIP;
+    },
+    SET_CURRENT_IP: (state, currentIPAddress) => {
+      state.currentIP = currentIPAddress;
+    },
   },
   actions: {
     setCurrentBuyer(context, payload) {
@@ -54,18 +62,26 @@ export default new Vuex.Store({
       const transactionsByBuyerID = transact.filter((trans) => trans.buyerID === currentBuyerID);
       context.commit('SET_TRANSACTIONS_BY_BUYER', transactionsByBuyerID);
     },
+    getBuyersByIP(context, ipAddress) {
+      const transactions = context.state.allTransactions;
+      const buyersByIP = transactions.filter((trans) => trans.ip === ipAddress);
+      const buyers = context.state.allBuyers;
+      const buyersFinal = [];
+      for (let i = 0; i < buyersByIP.length; i += 1) {
+        for (let j = 0; j < buyers.length; j += 1) {
+          if (buyers[j].id === buyersByIP[i].buyerID) {
+            buyersFinal.push(buyers[j]);
+          }
+        }
+      }
+      context.commit('SET_CURRENT_IP', ipAddress);
+      context.commit('SET_BUYERS_BY_IP', buyersFinal);
+    },
     getProductsByTransaction(context, currentProductsIds) {
       const productsIDs = currentProductsIds;
       const allProd = context.state.allProducts;
       const currentProducts = allProd.filter((p) => productsIDs.includes(p.id) === true);
       context.commit('SET_PRODUCTS_BY_TRANSACTION', currentProducts);
-      // console.log('----------------');
-      // console.log(typeof productsIDs);
-      // console.log(productsIDs);
-      // console.log(allProd);
-      // // console.log(currentProductsIds);
-      // console.log('----------------');
-      // console.log(currentProducts);
     },
     async fetchAllBuyers(context) {
       try {

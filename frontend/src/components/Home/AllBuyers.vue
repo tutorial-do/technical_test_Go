@@ -42,7 +42,7 @@
 <script>
 
 export default {
-  name: 'AllBuyers',
+  name: 'BuyersByIP',
   props: {
     data: {
       type: [Array, String],

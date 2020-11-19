@@ -28,6 +28,7 @@ func DatabaseConnection() (*dgo.Dgraph, func()) {
 	return dgraphClient, closeDB
 }
 
+// SaveData is a function to save data to the database Dgraph
 func SaveData(dgraphClient *dgo.Dgraph, dataJSON []byte) error {
 	ctx := context.Background()
 
