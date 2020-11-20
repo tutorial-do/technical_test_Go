@@ -20,12 +20,6 @@ const (
 	layoutISO = "2006-01-02"
 )
 
-type (
-	buyersList       []models.Buyer
-	productsList     []models.Product
-	transactionsList []models.Transaction
-)
-
 func timeConversor(date string) string {
 	if date == "" {
 		currentDate := time.Now().Unix()
