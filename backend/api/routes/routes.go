@@ -91,6 +91,58 @@ func GetAllBuyers(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 	}
 }
 
+// GetDataBuyerbyID function to find the information of a buyer by ID
+func GetDataBuyerbyID(dgraphClient *dgo.Dgraph) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+
+		ctx := context.Background()
+		q := `query BuyerData($id: string){
+			buyerInformation(func: eq(id, $id)){
+				~buyerLinker{
+					buyerID
+					name
+					id
+					device
+					sameIP as ip
+					productLinker{
+						name
+						price
+						id
+					}
+				}
+		},
+			{
+				sameIPBuyers(func: eq(ip, val(sameIP))){
+					ip
+					buyerLinker{
+						id
+						name
+						age
+					}
+					productLinker{
+						name
+					}
+				}
+			},
+			{
+				recomendedProducts(func: type(Product)){
+					id
+					name
+					price
+				}
+			}  
+		}`
+
+		resp, err := dgraphClient.NewTxn().QueryWithVars(ctx, q, map[string]string{"$id": id})
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		w.Write(resp.Json)
+	}
+}
+
 // GetAllProducts functions to retrieve all products from the database
 func GetAllProducts(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

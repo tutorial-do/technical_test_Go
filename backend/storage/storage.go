@@ -108,7 +108,7 @@ func linkCreatorBuyers(dbClient *dgo.Dgraph, buyerIDs []string) error {
 		upsertQuery.WriteString(q)
 
 		mu := &api.Mutation{
-			SetNquads: []byte(fmt.Sprintf(`uid(predicate1_%d) <transactionLinker> uid(predicate2_%d) .`, index, index)),
+			SetNquads: []byte(fmt.Sprintf(`uid(predicate1_%d) <buyerLinker> uid(predicate2_%d) .`, index, index)),
 		}
 
 		upsertMutation = append(upsertMutation, mu)

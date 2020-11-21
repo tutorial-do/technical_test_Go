@@ -36,6 +36,9 @@ func main() {
 	router.Route("/allbuyers", func(r chi.Router) {
 		r.Get("/", routes.GetAllBuyers(dbConnection))
 	})
+	router.Route("/buyers/{id}", func(r chi.Router) {
+		r.Post("/", routes.GetDataBuyerbyID(dbConnection))
+	})
 	router.Route("/allproducts", func(r chi.Router) {
 		r.Get("/", routes.GetAllProducts(dbConnection))
 	})

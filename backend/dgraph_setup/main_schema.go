@@ -45,7 +45,7 @@ func main() {
 		# Define Directives and index
 		
 		productLinker: [uid] @reverse .
-		transactionLinker: [uid] @reverse .
+		buyerLinker: [uid] @reverse .
 		id: string @index(hash) .
 		name: string .
 		age: int .
