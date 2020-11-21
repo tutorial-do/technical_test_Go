@@ -62,8 +62,8 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchAllBuyers');
-    this.$store.dispatch('fetchAllProducts');
-    this.$store.dispatch('fetchAllTransactions');
+    // this.$store.dispatch('fetchAllProducts');
+    // this.$store.dispatch('fetchAllTransactions');
   },
   computed: mapState({
     allBuyers: (state) => state.allBuyers,

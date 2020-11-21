@@ -7,7 +7,6 @@
           elevation="5"
           >
           <h1>Transactions of Buyer: {{ activeBuyer.name }}</h1>
-          <!-- {{ transactionsByBuyerID }} -->
           <v-data-table
             :headers="headers"
             :items="transactionsByBuyerID"
@@ -20,25 +19,13 @@
             <v-icon
               small
               class="mr-2"
-              @click="setterTransaction(item.productsIDs)
+              @click="setterTransaction(item.id)
                       setterDevice(item.ip)"
             >
               Select to display
             </v-icon>
           </template>
           </v-data-table>
-
-          <!-- <ul class="sidebar-group-items">
-            <li
-              v-for="(item, index) in transactionsByBuyerID"
-              :key="index"
-            >
-              {{ item.id }}
-              {{ item.buyerID }}
-              {{ item.device }}
-              {{ item.productsIDs }}
-            </li>
-          </ul> -->
           </v-card>
         </div>
       </div>
@@ -70,7 +57,6 @@ export default {
         { text: 'Device', value: 'device' },
         { text: 'IP', value: 'ip' },
         { text: 'Buyer ID', value: 'buyerID' },
-        { text: 'Products', value: 'productsIDs' },
         { text: 'Selector', value: 'select', sortable: false },
       ],
     };
@@ -81,8 +67,8 @@ export default {
   }),
   mounted() {},
   methods: {
-    setterTransaction(currentProductsIDs) {
-      this.$store.dispatch('getProductsByTransaction', currentProductsIDs);
+    setterTransaction(currentTrx) {
+      this.$store.dispatch('productsByTransactionID', currentTrx);
     },
     setterDevice(ipAddress) {
       this.$store.dispatch('getBuyersByIP', ipAddress);

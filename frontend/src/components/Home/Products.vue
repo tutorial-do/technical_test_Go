@@ -13,15 +13,6 @@
             :items-per-page="5"
             class="elevation-1"
           ></v-data-table>
-          <!-- <ul class="sidebar-group-items">
-            <li
-              v-for="(item, index) in data"
-              :key="index"
-            >
-              {{ item.name }}
-              ${{ item.price }}
-            </li>
-          </ul> -->
           </v-card>
         </div>
       </div>

@@ -23,16 +23,6 @@
             </v-icon>
           </template>
           </v-data-table>
-          <!-- <ul class="sidebar-group-items">
-            <li
-              v-for='(item, index) in data'
-              :key='index'
-              @click='setterBuyer(item.name, item.id, item.age)'
-            >
-              {{ item.name }}
-              {{ item.age }}
-            </li>
-          </ul> -->
           </v-card>
         </div>
       </div>
