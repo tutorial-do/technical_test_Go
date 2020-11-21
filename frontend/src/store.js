@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex);
-// const baseURL = 'http://localhost:3000/';
 
 export default new Vuex.Store({
   state: {
@@ -35,11 +34,9 @@ export default new Vuex.Store({
       state.activeBuyer.id = payload.id;
       state.activeBuyer.name = payload.name;
       state.activeBuyer.age = payload.age;
-      console.log(state.activeBuyer);
     },
     SET_PRODUCTS_BY_TRANSACTION: (state, currentProducts) => {
       state.productsByTransaction = currentProducts;
-      console.log(state.productsByTransaction);
     },
     SET_TRANSACTIONS_BY_BUYER: (state, transactionsByBuyerID) => {
       state.transactionsByBuyerID = transactionsByBuyerID;
@@ -76,10 +73,6 @@ export default new Vuex.Store({
         const buyerTransaction = response.data.buyerInformation[0]['~buyerLinker'];
         const buyersSameIP = response.data.sameIPBuyers;
         const buyerRecomendedProducts = response.data.recomendedProducts;
-        console.log(buyerTransaction);
-        console.log(buyersSameIP);
-        console.log(buyerRecomendedProducts);
-
         context.commit('SET_TRANSACTIONS_BY_BUYER', buyerTransaction);
         context.commit('ALL_BUYERS_SAME_IP', buyersSameIP);
         context.commit('SET_ALL_PRODUCTS', buyerRecomendedProducts);
@@ -93,13 +86,16 @@ export default new Vuex.Store({
       const currentProducts = transaction.productLinker;
       context.commit('SET_PRODUCTS_BY_TRANSACTION', currentProducts);
     },
-    // getTransactionsByBuyerID(context, currentBuyerID) {
-    //   context.dispatch('fetchAllTransactions');
-    //   const transact = context.state.allTransactions;
-    //   const transactionsByBuyerID = transact.filter((trans) => trans.buyerID === currentBuyerID);
-    //   context.commit('SET_TRANSACTIONS_BY_BUYER', transactionsByBuyerID);
-    // },
     getBuyersByIP(context, ipAddress) {
+      const buyersSameIP = context.state.allBuyersSameIP;
+      const buyersAllInfo = buyersSameIP.filter((elem) => elem.ip === ipAddress);
+      const buyersFinal = [];
+
+      for (let i = 0; i < buyersAllInfo.length; i += 1) {
+        buyersFinal.push(buyersAllInfo[i].buyerLinker[0]);
+      }
+      context.commit('SET_CURRENT_IP', ipAddress);
+      context.commit('SET_BUYERS_BY_IP', buyersFinal);
       // const transactions = context.state.allTransactions;
       // const buyersByIP = transactions.filter((trans) => trans.ip === ipAddress);
       // const buyers = context.state.allBuyers;
@@ -111,18 +107,9 @@ export default new Vuex.Store({
       //     }
       //   }
       // }
-      const buyersSameIP = context.state.allBuyersSameIP;
-      const buyersAllInfo = buyersSameIP.filter((elem) => elem.ip === ipAddress);
-      const buyersFinal = [];
-
-      for (let i = 0; i < buyersAllInfo.length; i += 1) {
-        buyersFinal.push(buyersAllInfo[i].buyerLinker[0]);
-      }
-      context.commit('SET_CURRENT_IP', ipAddress);
-      context.commit('SET_BUYERS_BY_IP', buyersFinal);
-      console.log('HOLA MUNDO', ipAddress);
-      console.log('HOLA MUNDO', buyersSameIP);
-      console.log('HOLA JULI', buyersFinal);
+      // console.log('HOLA MUNDO', ipAddress);
+      // console.log('HOLA MUNDO', buyersSameIP);
+      // console.log('HOLA JULI', buyersFinal);
     },
     getProductsByTransaction(context, currentProductsIds) {
       const productsIDs = currentProductsIds;
@@ -139,6 +126,12 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
+    // getTransactionsByBuyerID(context, currentBuyerID) {
+    //   context.dispatch('fetchAllTransactions');
+    //   const transact = context.state.allTransactions;
+    //   const transactionsByBuyerID = transact.filter((trans) => trans.buyerID === currentBuyerID);
+    //   context.commit('SET_TRANSACTIONS_BY_BUYER', transactionsByBuyerID);
+    // },
     // async fetchAllProducts(context) {
     //   try {
     //     const response = await axios.get('http://localhost:3000/allproducts');

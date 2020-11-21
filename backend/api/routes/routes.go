@@ -18,12 +18,13 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 		date := chi.URLParam(r, "date")
 		dataBuyers, dataProducts, dataTransactions := handlers.FetchData(date)
 
-		// UniqueBuyers, UniqueProducts, UniqueTransactions, err := handlers.Strainer(dbClient, dataBuyers, dataProducts, dataTransactions)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
+		uniqueBuyers, uniqueProducts, uniqueTransactions, err := handlers.DataFilter(dbClient, dataBuyers, dataProducts, dataTransactions)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		buyerJSON, err := json.Marshal(dataBuyers)
+		// buyerJSON, err := json.Marshal(dataBuyers)
+		buyerJSON, err := json.Marshal(uniqueBuyers)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -32,20 +33,19 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		// productJSON, err := json.Marshal(UniqueProducts)
-		productJSON, err := json.Marshal(dataProducts)
+		// productJSON, err := json.Marshal(dataProducts)
+		productJSON, err := json.Marshal(uniqueProducts)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		err = storage.SaveData(dbClient, productJSON)
-		// err = storage.SaveData(dbClient, productJSON)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		transactionJSON, err := json.Marshal(dataTransactions)
-		// transactionJSON, err := json.Marshal(UniqueTransactions)
+		// transactionJSON, err := json.Marshal(dataTransactions)
+		transactionJSON, err := json.Marshal(uniqueTransactions)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -55,13 +55,11 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 		// function to connect the data
-		storage.ConnectData(dbClient, dataBuyers, dataProducts, dataTransactions)
+		// storage.ConnectData(dbClient, dataBuyers, dataProducts, dataTransactions)
+		storage.ConnectData(dbClient, uniqueBuyers, uniqueProducts, uniqueTransactions)
 		if err != nil {
 			log.Fatal(err)
 		}
-		// w.Write(buyerJSON)
-		// w.Write(productJSON)
-		// w.Write(transactionJSON)
 		w.Write([]byte("Data succesfully loaded"))
 	}
 }

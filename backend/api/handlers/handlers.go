@@ -2,8 +2,10 @@ package handlers
 
 import (
 	// "context"
+	"context"
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,6 +13,8 @@ import (
 	"strings"
 	"technical_test_Go/backend/models"
 	"time"
+
+	"github.com/dgraph-io/dgo"
 	// "github.com/dgraph-io/dgo"
 )
 
@@ -165,37 +169,168 @@ func fetchTransactionsData(dateTime string) ([]models.Transaction, error) {
 	return allTransactions, nil
 }
 
-// Strainer to check for repeated data already in the database
-// func Strainer(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProducts []models.Product, dataTransactions []models.Transaction) {
-// 	UniqueBuyers, err := strainerBuyers()
-// 	UniqueProducts, err := strainerProducts()
-// 	UniqueTransactions, err := strainerTransactions()
-// }
+// DataFilter to check for repeated data already in the database
+func DataFilter(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProducts []models.Product, dataTransactions []models.Transaction) ([]models.Buyer, []models.Product, []models.Transaction, error) {
+	uniqueBuyers, err := uniqueBuyersSelector(dgraphClient, dataBuyers)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	uniqueProducts, err := uniqueProductsSelector(dgraphClient, dataProducts)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	uniqueTransactions, err := uniqueTransactionsSelector(dgraphClient, dataTransactions)
+	if err != nil {
+		return nil, nil, nil, err
+	}
 
-// func strainerBuyers(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer) ([]models.Buyer, error) {
-// 	ctx := context.Background()
-// 	q := `{
-// 			allBuyers(func: type(Buyer)){
-// 				id
-// 				name
-// 				age
-// 			}
-// 		}`
+	return uniqueBuyers, uniqueProducts, uniqueTransactions, nil
+}
 
-// 	txn := dgraphClient.NewTxn()
+func removeBuyerAtIndex(s []models.Buyer, index int) []models.Buyer {
+	return append(s[:index], s[index+1:]...)
+}
 
-// 	defer txn.Discard(ctx)
+func uniqueBuyersSelector(dgraphClient *dgo.Dgraph, dataBuyersEnpoint []models.Buyer) ([]models.Buyer, error) {
+	ctx := context.Background()
+	q := `{
+			allBuyers(func: type(Buyer)){
+				id
+				name
+				age
+			}
+		}`
 
-// 	var
+	txn := dgraphClient.NewTxn()
 
-// 	res, err := txn.Query(ctx, q)
-// 	if err != nil {
-// 		return ,
-// 	}
-// 	res.allBuyers
+	defer txn.Discard(ctx)
 
-// }
-// func strainerProducts(dgraphClient *dgo.Dgraph, dataProducts []models.Product) ([]models.Product, error) {
-// }
-// func strainerTransactions(dgraphClient *dgo.Dgraph, dataTransactions []models.Transaction) ([]models.Transaction, error) {
-// }
+	res, err := txn.Query(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+
+	type buyerResponse struct {
+		buyers []models.Buyer
+	}
+
+	var dataBuyersResponse buyerResponse
+
+	err = json.Unmarshal(res.Json, &dataBuyersResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	dataBuyersDB := dataBuyersResponse.buyers
+
+	for index, newBuyer := range dataBuyersEnpoint {
+		for _, dbBuyer := range dataBuyersDB {
+			if newBuyer.ID == dbBuyer.ID {
+				dataBuyersEnpoint = removeBuyerAtIndex(dataBuyersEnpoint, index)
+			} else {
+				continue
+			}
+		}
+	}
+	return dataBuyersEnpoint, nil
+}
+
+func removeProductAtIndex(s []models.Product, index int) []models.Product {
+	return append(s[:index], s[index+1:]...)
+}
+
+func uniqueProductsSelector(dgraphClient *dgo.Dgraph, dataProductsEnpoint []models.Product) ([]models.Product, error) {
+	ctx := context.Background()
+	q := `{
+			allProducts(func: type(Product)){
+				id
+				name
+				price
+			}
+		}`
+
+	txn := dgraphClient.NewTxn()
+
+	defer txn.Discard(ctx)
+
+	res, err := txn.Query(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+
+	type productResponse struct {
+		allProducts []models.Product
+	}
+
+	var dataProductsResponse productResponse
+
+	err = json.Unmarshal(res.Json, &dataProductsResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	var dataProductsDB []models.Product
+	dataProductsDB = dataProductsResponse.allProducts
+
+	fmt.Println(dataProductsResponse.allProducts)
+	fmt.Println("--------------------------")
+	fmt.Println(res.Json)
+
+	for index, newBuyer := range dataProductsEnpoint {
+		for _, dbBuyer := range dataProductsDB {
+			if newBuyer.ID == dbBuyer.ID {
+				dataProductsEnpoint = removeProductAtIndex(dataProductsEnpoint, index)
+			} else {
+				continue
+			}
+		}
+	}
+	// fmt.Println(dataProductsEnpoint)
+	return dataProductsEnpoint, nil
+}
+
+func removeTransactionAtIndex(s []models.Transaction, index int) []models.Transaction {
+	return append(s[:index], s[index+1:]...)
+}
+
+func uniqueTransactionsSelector(dgraphClient *dgo.Dgraph, dataTransactionsEnpoint []models.Transaction) ([]models.Transaction, error) {
+	ctx := context.Background()
+	q := `{
+			allTransactions(func: type(Transaction)){
+				id
+			}
+		}`
+
+	txn := dgraphClient.NewTxn()
+
+	defer txn.Discard(ctx)
+
+	res, err := txn.Query(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+
+	type TransactionResponse struct {
+		transactions []models.Transaction
+	}
+
+	var dataTransactionsResponse TransactionResponse
+
+	err = json.Unmarshal(res.Json, &dataTransactionsResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	dataTransactionsDB := dataTransactionsResponse.transactions
+
+	for index, newBuyer := range dataTransactionsEnpoint {
+		for _, dbBuyer := range dataTransactionsDB {
+			if newBuyer.ID == dbBuyer.ID {
+				dataTransactionsEnpoint = removeTransactionAtIndex(dataTransactionsEnpoint, index)
+			} else {
+				continue
+			}
+		}
+	}
+	return dataTransactionsEnpoint, nil
+}
