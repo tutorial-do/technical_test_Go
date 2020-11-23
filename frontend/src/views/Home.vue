@@ -1,16 +1,22 @@
 <template>
-  <div class="container container--fluid">
+  <div class="container">
       <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-5 mt-3">
             <AllBuyers
             :data="allBuyers"
             />
           </div>
-          <div class="col-md-6">
-            <BuyerInfo
-            :data="activeBuyer"
-            />
-            <LoadData />
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-6">
+                <BuyerInfo
+                :data="activeBuyer"
+                />
+              </div>
+              <div class="col-md-6">
+                <LoadData />
+              </div>
+            </div>
           </div>
       </div>
       <div class="row">

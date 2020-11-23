@@ -1,36 +1,30 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <v-card
-          elevation="5"
-          >
-          <h1>Transactions of Buyer: {{ activeBuyer.name }}</h1>
-          <v-data-table
-            :headers="headers"
-            :items="transactionsByBuyerID"
-            :items-per-page="5"
-            class="elevation-1"
-          >
-          <template
-          v-slot:item.select="{ item }"
-          >
-            <v-icon
-              small
-              class="mr-2"
-              @click="setterTransaction(item.id)
-                      setterDevice(item.ip)"
-            >
-              Select to display
-            </v-icon>
-          </template>
-          </v-data-table>
-          </v-card>
-        </div>
-      </div>
-    </div>
-  </section>
+  <v-card
+  elevation="5"
+  >
+    <v-card-text>
+      <h1>Transactions of Buyer: {{ activeBuyer.name }}</h1>
+    </v-card-text>
+    <v-data-table
+      :headers="headers"
+      :items="transactionsByBuyerID"
+      :items-per-page="5"
+      class="elevation-1"
+    >
+    <template
+    v-slot:item.select="{ item }"
+    >
+      <v-icon
+        small
+        class="mr-2"
+        @click="setterTransaction(item.id)
+                setterDevice(item.ip)"
+      >
+        Select to display
+      </v-icon>
+    </template>
+    </v-data-table>
+  </v-card>
 </template>
 <script>
 

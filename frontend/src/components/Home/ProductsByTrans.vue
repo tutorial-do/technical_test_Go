@@ -1,23 +1,17 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <v-card
-          elevation="5"
-          >
-          <h1>Products By Transaction</h1>
-          <v-data-table
-            :headers="headers"
-            :items="productsByTransaction"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
-          </v-card>
-        </div>
-      </div>
-    </div>
-  </section>
+  <v-card
+  elevation="5"
+  >
+    <v-card-text>
+      <h1>Products By Transaction</h1>
+    </v-card-text>
+    <v-data-table
+      :headers="headers"
+      :items="productsByTransaction"
+      :items-per-page="5"
+      class="elevation-1"
+    ></v-data-table>
+  </v-card>
 </template>
 <script>
 

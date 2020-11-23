@@ -1,32 +1,7 @@
 # technical_test_Go
 technical test in Golang for a recruiting process
 
-## Project setup - Frontend
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### P
-```
-npm run lint
-```
-
-====================================================
+=================================================
 
 ### First, grab the latest version of Docker.
 
@@ -53,6 +28,23 @@ docker exec -it dgraph dgraph alpha --lru_mb 2048 --zero localhost:5080 --whitel
 
 # And in another, run ratel (Dgraph UI)
 docker exec -it dgraph dgraph-ratel
+```
+
+===================================================
+
+## Project setup - Frontend
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
 ```
 
 ============================================

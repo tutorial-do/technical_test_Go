@@ -1,27 +1,19 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <v-card
-            elevation="5"
-          >
-          <h1
-          color:light-blue
-          >Buyers by IP: {{ currentIP }}</h1>
-          <template>
-            <v-data-table
-              :headers="headers"
-              :items="buyersIP"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          </template>
-          </v-card>
-        </div>
-      </div>
-    </div>
-  </section>
+  <v-card
+    elevation="5"
+  >
+    <v-card-text>
+      <h1>Buyers by IP: {{ currentIP }}</h1>
+    </v-card-text>
+    <template>
+      <v-data-table
+        :headers="headers"
+        :items="buyersIP"
+        :items-per-page="5"
+        class="elevation-1"
+      ></v-data-table>
+    </template>
+  </v-card>
 </template>
 <script>
 
