@@ -34,16 +34,16 @@ func main() {
 
 	// RESTy routes for "articles" resource
 	router.Route("/load", func(r chi.Router) {
-		r.Get("/", routes.DataLoader(dbConnection))
+		r.Post("/", routes.DataLoader(dbConnection))
 	})
 	router.Route("/load/{date}", func(r chi.Router) {
-		r.Get("/", routes.DataLoader(dbConnection))
+		r.Post("/", routes.DataLoader(dbConnection))
 	})
 	router.Route("/allbuyers", func(r chi.Router) {
 		r.Get("/", routes.GetAllBuyers(dbConnection))
 	})
 	router.Route("/buyers/{id}", func(r chi.Router) {
-		r.Post("/", routes.GetDataBuyerbyID(dbConnection))
+		r.Get("/", routes.GetDataBuyerbyID(dbConnection))
 	})
 	router.Route("/allproducts", func(r chi.Router) {
 		r.Get("/", routes.GetAllProducts(dbConnection))

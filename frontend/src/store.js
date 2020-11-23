@@ -54,10 +54,8 @@ export default new Vuex.Store({
   actions: {
     async loadData(context, date) {
       try {
-        await axios.get(`http://localhost:3000/load/${date}`);
+        await axios.post(`http://localhost:3000/load/${date}`);
         context.dispatch('fetchAllBuyers');
-        // context.dispatch('fetchAllProducts');
-        // context.dispatch('fetchAllTransactions');
       } catch (error) {
         console.log(error);
       }
@@ -69,7 +67,7 @@ export default new Vuex.Store({
     },
     async getBuyerInformationByID(context, currentBuyerID) {
       try {
-        const response = await axios.post(`http://localhost:3000/buyers/${currentBuyerID}`);
+        const response = await axios.get(`http://localhost:3000/buyers/${currentBuyerID}`);
         const buyerTransaction = response.data.buyerInformation[0]['~buyerLinker'];
         const buyersSameIP = response.data.sameIPBuyers;
         const buyerRecomendedProducts = response.data.recomendedProducts;
@@ -96,20 +94,6 @@ export default new Vuex.Store({
       }
       context.commit('SET_CURRENT_IP', ipAddress);
       context.commit('SET_BUYERS_BY_IP', buyersFinal);
-      // const transactions = context.state.allTransactions;
-      // const buyersByIP = transactions.filter((trans) => trans.ip === ipAddress);
-      // const buyers = context.state.allBuyers;
-      // const buyersFinal = [];
-      // for (let i = 0; i < buyersByIP.length; i += 1) {
-      //   for (let j = 0; j < buyers.length; j += 1) {
-      //     if (buyers[j].id === buyersByIP[i].buyerID) {
-      //       buyersFinal.push(buyers[j]);
-      //     }
-      //   }
-      // }
-      // console.log('HOLA MUNDO', ipAddress);
-      // console.log('HOLA MUNDO', buyersSameIP);
-      // console.log('HOLA JULI', buyersFinal);
     },
     getProductsByTransaction(context, currentProductsIds) {
       const productsIDs = currentProductsIds;
