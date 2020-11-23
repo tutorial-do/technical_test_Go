@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"technical_test_Go/backend/api/routes"
 
@@ -54,5 +55,8 @@ func main() {
 	defer dbclose()
 
 	fmt.Println("the service is running on port 3000")
-	http.ListenAndServe(":3000", router)
+	err := http.ListenAndServe(":3000", router)
+	if err != nil {
+		log.Fatal("Error listening and serving")
+	}
 }
