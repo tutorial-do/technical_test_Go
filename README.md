@@ -34,6 +34,10 @@ docker run -it -p 5080:5080 -p 6080:6080 -p 8080:8080 \
   -p 9080:9080 -p 8000:8000 -v ~/dgraph:/dgraph --name dgraph \
   dgraph/dgraph:v20.03.0 dgraph zero
 ```
+* Port 8000 will be used for the web-UI
+* Port 8080 will be used for the RestAPI
+* Port 9080 will be used for the grpc API 
+
 #### → In another terminal, now run Dgraph alpha
 ```
 docker exec -it dgraph dgraph alpha --lru_mb 2048 --zero localhost:5080 --whitelist 0.0.0.0/0
