@@ -47,7 +47,13 @@ docker exec -it dgraph dgraph alpha --lru_mb 2048 --zero localhost:5080 --whitel
 docker exec -it dgraph dgraph-ratel
 ```
 
-### Start the server
+### Load the Dgraph Schema
+cd into backend/dgraph_setup/ and then hit:
+```
+ go run main_schema.go
+```
+
+### Then, start the server
 cd into backend/api/ and then hit:
 ```
  go run main.go
