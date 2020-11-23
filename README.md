@@ -62,10 +62,6 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 ## Author
 
 * [GitHub - Julian Franco Rua](https://github.com/julianfrancor)
