@@ -1,11 +1,11 @@
 # technical test in Golang and Vue 
 technical test in Golang for a recruiting process
 
-<img width="300" alt="ClientTracker" src="https://user-images.githubusercontent.com/53787841/100001129-a7483580-2d90-11eb-8274-6fcbdd062ec4.png">
+<img width="100" alt="ClientTracker" src="https://user-images.githubusercontent.com/53787841/100001129-a7483580-2d90-11eb-8274-6fcbdd062ec4.png">
 
 ## Architecture
 
-<img width="400" alt="image" src="https://user-images.githubusercontent.com/53787841/100014959-2d6e7700-2da5-11eb-9a88-ac762792c110.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/53787841/100014959-2d6e7700-2da5-11eb-9a88-ac762792c110.png">
 
 
 ## Data model
