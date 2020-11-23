@@ -38,8 +38,6 @@ cd into backend/api/ and then hit:
 ```
 the web-app will be listening and serving on port 3000
 
-===================================================
-
 ## Project setup - Frontend
 
 cd into the folder technical_test_Go/frontend and install all the packages running:
