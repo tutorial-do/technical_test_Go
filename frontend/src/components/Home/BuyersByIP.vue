@@ -6,7 +6,9 @@
           <v-card
             elevation="5"
           >
-          <h1>Buyers by IP: {{ currentIP }}</h1>
+          <h1
+          color:light-blue
+          >Buyers by IP: {{ currentIP }}</h1>
           <template>
             <v-data-table
               :headers="headers"

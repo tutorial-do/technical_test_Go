@@ -23,7 +23,6 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		// buyerJSON, err := json.Marshal(dataBuyers)
 		buyerJSON, err := json.Marshal(uniqueBuyers)
 		if err != nil {
 			log.Fatal(err)
@@ -33,7 +32,6 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		// productJSON, err := json.Marshal(dataProducts)
 		productJSON, err := json.Marshal(uniqueProducts)
 		if err != nil {
 			log.Fatal(err)
@@ -44,7 +42,6 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		// transactionJSON, err := json.Marshal(dataTransactions)
 		transactionJSON, err := json.Marshal(uniqueTransactions)
 		if err != nil {
 			log.Fatal(err)
@@ -54,13 +51,14 @@ func DataLoader(dbClient *dgo.Dgraph) http.HandlerFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// function to connect the data
-		// storage.ConnectData(dbClient, dataBuyers, dataProducts, dataTransactions)
-		storage.ConnectData(dbClient, uniqueBuyers, uniqueProducts, uniqueTransactions)
+		err = storage.ConnectData(dbClient, uniqueBuyers, uniqueProducts, uniqueTransactions)
 		if err != nil {
 			log.Fatal(err)
 		}
-		w.Write([]byte("Data succesfully loaded"))
+		_, err = w.Write([]byte("Data succesfully loaded"))
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -85,7 +83,10 @@ func GetAllBuyers(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		w.Write(res.Json)
+		_, err = w.Write(res.Json)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -137,7 +138,10 @@ func GetDataBuyerbyID(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 			log.Fatal(err)
 		}
 
-		w.Write(resp.Json)
+		_, err = w.Write(resp.Json)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -161,11 +165,14 @@ func GetAllProducts(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		w.Write(res.Json)
+		_, err = w.Write(res.Json)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
-// GetAllProducts functions to retrieve all products from the database
+// GetAllTransactions functions to retrieve all products from the database
 func GetAllTransactions(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
@@ -187,6 +194,9 @@ func GetAllTransactions(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 		if err != nil {
 			log.Fatal(err)
 		}
-		w.Write(res.Json)
+		_, err = w.Write(res.Json)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }

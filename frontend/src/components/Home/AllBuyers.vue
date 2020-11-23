@@ -14,6 +14,7 @@
             class="elevation-1"
           >
           <template v-slot:item.select="{ item }">
+          <!-- <template v-slot:[`item.select`]> -->
             <v-icon
               small
               class="mr-2"
