@@ -55,3 +55,8 @@ npm run serve
 ```
 npm run build
 ```
+## Author
+
+* [GitHub - Julian Franco Rua](https://github.com/julianfrancor)
+
+* [LinkedIn - Julian Franco Rua](https://www.linkedin.com/in/julianfrancor/)
