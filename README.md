@@ -1,7 +1,6 @@
-# technical_test_Go
+# technical test in Golang and Vue 
 technical test in Golang for a recruiting process
 
-=================================================
 ## Project setup - Backend
 
 ### First, grab the latest version of Docker.
