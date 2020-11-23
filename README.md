@@ -2,6 +2,7 @@
 technical test in Golang for a recruiting process
 
 =================================================
+## Project setup - Backend
 
 ### First, grab the latest version of Docker.
 
@@ -30,9 +31,18 @@ docker exec -it dgraph dgraph alpha --lru_mb 2048 --zero localhost:5080 --whitel
 docker exec -it dgraph dgraph-ratel
 ```
 
+### Start the server
+cd into backend/api/ and then hit:
+```
+ go run main.go
+```
+the web-app will be listening and serving on port 3000
+
 ===================================================
 
 ## Project setup - Frontend
+
+cd into the folder technical_test_Go/frontend and install all the packages running:
 ```
 npm install
 ```
@@ -46,9 +56,3 @@ npm run serve
 ```
 npm run build
 ```
-
-============================================
-
-### Start the server
-```
-cd into backend/api/ and then hit go run main.go and the web-app will be listening and serving on port 3000
