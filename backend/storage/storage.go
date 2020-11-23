@@ -50,20 +50,6 @@ func SaveData(dgraphClient *dgo.Dgraph, dataJSON []byte) error {
 	return nil
 }
 
-// DeleteAll function to delete all data and schema from the database
-func DeleteAll() {
-	dgraphClient, cancel := DatabaseConnection()
-
-	defer cancel()
-
-	op := api.Operation{DropAll: true}
-	ctx := context.Background()
-
-	if err := dgraphClient.Alter(ctx, &op); err != nil {
-		log.Fatal("The drop all operation should have succeeded")
-	}
-}
-
 // ConnectData function to connect the data within the Database creating links between related nodes
 func ConnectData(dbClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProducts []models.Product, dataTransactions []models.Transaction) error {
 	var buyerIDs []string

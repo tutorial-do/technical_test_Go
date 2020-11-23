@@ -27,7 +27,6 @@
                 Load data
               </v-btn>
             </template>
-            {{ picker }}
           </v-card>
         </div>
       </div>
@@ -45,6 +44,9 @@ export default {
   methods: {
     loadData(picker) {
       this.$store.dispatch('loadData', picker);
+    },
+    deleteData() {
+      this.$store.dispatch('deleteData');
     },
   },
 };

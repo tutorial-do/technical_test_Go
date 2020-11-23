@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"time"
 
 	"github.com/dgraph-io/dgo"
-	// "github.com/dgraph-io/dgo"
 )
 
 const (
@@ -187,11 +185,7 @@ func DataFilter(dgraphClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProduct
 	return uniqueBuyers, uniqueProducts, uniqueTransactions, nil
 }
 
-func removeBuyerAtIndex(s []models.Buyer, index int) []models.Buyer {
-	return append(s[:index], s[index+1:]...)
-}
-
-func uniqueBuyersSelector(dgraphClient *dgo.Dgraph, dataBuyersEnpoint []models.Buyer) ([]models.Buyer, error) {
+func uniqueBuyersSelector(dgraphClient *dgo.Dgraph, dataBuyersEndpoint []models.Buyer) ([]models.Buyer, error) {
 	ctx := context.Background()
 	q := `{
 			allBuyers(func: type(Buyer)){
@@ -205,41 +199,43 @@ func uniqueBuyersSelector(dgraphClient *dgo.Dgraph, dataBuyersEnpoint []models.B
 
 	defer txn.Discard(ctx)
 
-	res, err := txn.Query(ctx, q)
+	responseBuyersDB, err := txn.Query(ctx, q)
 	if err != nil {
 		return nil, err
 	}
 
 	type buyerResponse struct {
-		buyers []models.Buyer
+		AllBuyers []models.Buyer `json:"allBuyers,omitempty"`
 	}
 
-	var dataBuyersResponse buyerResponse
+	var dataBuyersResponse *buyerResponse
 
-	err = json.Unmarshal(res.Json, &dataBuyersResponse)
+	err = json.Unmarshal([]byte(responseBuyersDB.Json), &dataBuyersResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	dataBuyersDB := dataBuyersResponse.buyers
+	dataBuyersDB := dataBuyersResponse.AllBuyers
 
-	for index, newBuyer := range dataBuyersEnpoint {
+	var finalBuyers []models.Buyer
+
+	for _, newBuyer := range dataBuyersEndpoint {
+		flag := false
 		for _, dbBuyer := range dataBuyersDB {
 			if newBuyer.ID == dbBuyer.ID {
-				dataBuyersEnpoint = removeBuyerAtIndex(dataBuyersEnpoint, index)
-			} else {
-				continue
+				flag = true
+				break
 			}
 		}
+		if !flag {
+			finalBuyers = append(finalBuyers, newBuyer)
+		}
 	}
-	return dataBuyersEnpoint, nil
+
+	return finalBuyers, nil
 }
 
-func removeProductAtIndex(s []models.Product, index int) []models.Product {
-	return append(s[:index], s[index+1:]...)
-}
-
-func uniqueProductsSelector(dgraphClient *dgo.Dgraph, dataProductsEnpoint []models.Product) ([]models.Product, error) {
+func uniqueProductsSelector(dgraphClient *dgo.Dgraph, dataProductsEndpoint []models.Product) ([]models.Product, error) {
 	ctx := context.Background()
 	q := `{
 			allProducts(func: type(Product)){
@@ -259,41 +255,37 @@ func uniqueProductsSelector(dgraphClient *dgo.Dgraph, dataProductsEnpoint []mode
 	}
 
 	type productResponse struct {
-		allProducts []models.Product
+		AllProducts []models.Product `json:"allProducts,omitempty"`
 	}
 
-	var dataProductsResponse productResponse
+	var dataProductsResponse *productResponse
 
 	err = json.Unmarshal(res.Json, &dataProductsResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	var dataProductsDB []models.Product
-	dataProductsDB = dataProductsResponse.allProducts
+	dataProductsDB := dataProductsResponse.AllProducts
 
-	fmt.Println(dataProductsResponse.allProducts)
-	fmt.Println("--------------------------")
-	fmt.Println(res.Json)
+	var finalProducts []models.Product
 
-	for index, newBuyer := range dataProductsEnpoint {
-		for _, dbBuyer := range dataProductsDB {
-			if newBuyer.ID == dbBuyer.ID {
-				dataProductsEnpoint = removeProductAtIndex(dataProductsEnpoint, index)
-			} else {
-				continue
+	for _, newProduct := range dataProductsEndpoint {
+		flag := false
+		for _, dbProduct := range dataProductsDB {
+			if newProduct.ID == dbProduct.ID {
+				flag = true
+				break
 			}
 		}
+		if !flag {
+			finalProducts = append(finalProducts, newProduct)
+		}
 	}
-	// fmt.Println(dataProductsEnpoint)
-	return dataProductsEnpoint, nil
+
+	return finalProducts, nil
 }
 
-func removeTransactionAtIndex(s []models.Transaction, index int) []models.Transaction {
-	return append(s[:index], s[index+1:]...)
-}
-
-func uniqueTransactionsSelector(dgraphClient *dgo.Dgraph, dataTransactionsEnpoint []models.Transaction) ([]models.Transaction, error) {
+func uniqueTransactionsSelector(dgraphClient *dgo.Dgraph, dataTransactionsEndpoint []models.Transaction) ([]models.Transaction, error) {
 	ctx := context.Background()
 	q := `{
 			allTransactions(func: type(Transaction)){
@@ -311,26 +303,32 @@ func uniqueTransactionsSelector(dgraphClient *dgo.Dgraph, dataTransactionsEnpoin
 	}
 
 	type TransactionResponse struct {
-		transactions []models.Transaction
+		AllTransactions []models.Transaction `json:"allTransactions,omitempty"`
 	}
 
-	var dataTransactionsResponse TransactionResponse
+	var dataTransactionsResponse *TransactionResponse
 
 	err = json.Unmarshal(res.Json, &dataTransactionsResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	dataTransactionsDB := dataTransactionsResponse.transactions
+	dataTransactionsDB := dataTransactionsResponse.AllTransactions
 
-	for index, newBuyer := range dataTransactionsEnpoint {
-		for _, dbBuyer := range dataTransactionsDB {
-			if newBuyer.ID == dbBuyer.ID {
-				dataTransactionsEnpoint = removeTransactionAtIndex(dataTransactionsEnpoint, index)
-			} else {
-				continue
+	var finalTransactions []models.Transaction
+
+	for _, newTransaction := range dataTransactionsEndpoint {
+		flag := false
+		for _, dbTransaction := range dataTransactionsDB {
+			if newTransaction.ID == dbTransaction.ID {
+				flag = true
+				break
 			}
 		}
+		if !flag {
+			finalTransactions = append(finalTransactions, newTransaction)
+		}
 	}
-	return dataTransactionsEnpoint, nil
+
+	return finalTransactions, nil
 }
