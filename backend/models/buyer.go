@@ -11,8 +11,8 @@ var (
 	// ErrEmptyBuyerName is used to indicate that the name is empty.
 	ErrEmptyBuyerName = errors.New("buyer 'name' cannot be empty")
 
-	// ErrEmptyBuyerAge is used to indicate that the age is empty.
-	ErrEmptyBuyerAge = errors.New("buyer 'age' cannot be empty")
+	// ErrEmptyBuyerAge is used to indicate that the age is empty or negative.
+	ErrEmptyBuyerAge = errors.New("buyer 'age' cannot be empty or negative")
 )
 
 // Buyer Representation of buyer

@@ -11,8 +11,8 @@ var (
 	// ErrEmptyProductName is used to indicate that the name is empty.
 	ErrEmptyProductName = errors.New("product 'name' cannot be empty")
 
-	// ErrEmptyProductPrice is used to indicate that the price is empty.
-	ErrEmptyProductPrice = errors.New("product 'price' cannot be empty")
+	// ErrEmptyProductPrice is used to indicate that the price is empty or negative.
+	ErrEmptyProductPrice = errors.New("product 'price' cannot be empty or negative")
 )
 
 // Product Representation of products
