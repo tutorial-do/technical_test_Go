@@ -19,8 +19,12 @@ export default new Vuex.Store({
     buyersIP: [],
     currentIP: '',
     allBuyersSameIP: [],
+    loadingStatus: false,
   },
   mutations: {
+    SET_LOADING_STATUS(state, status) {
+      state.loadingStatus = status;
+    },
     SET_ALL_BUYERS(state, buyers) {
       state.allBuyers = buyers;
     },
@@ -54,7 +58,25 @@ export default new Vuex.Store({
   actions: {
     async loadData(context, date) {
       try {
+        context.commit('SET_LOADING_STATUS', true);
+        console.log(context.state.loadingStatus);
         await axios.post(`http://localhost:3000/load/${date}`);
+        context.dispatch('fetchAllBuyers');
+      } catch (error) {
+        console.log(error);
+      }
+      context.commit('SET_LOADING_STATUS', false);
+      console.log('se supone false: ', context.state.loadingStatus);
+    },
+    async deleteData(context) {
+      try {
+        context.commit('SET_CURRENT_BUYER', {});
+        context.commit('SET_TRANSACTIONS_BY_BUYER', []);
+        context.commit('SET_PRODUCTS_BY_TRANSACTION', []);
+        context.commit('SET_CURRENT_IP', '');
+        context.commit('SET_BUYERS_BY_IP', []);
+        context.commit('SET_ALL_PRODUCTS', []);
+        await axios.delete('http://localhost:3000/deleteall');
         context.dispatch('fetchAllBuyers');
       } catch (error) {
         console.log(error);
@@ -64,6 +86,9 @@ export default new Vuex.Store({
       const currentBuyerID = payload.id;
       context.dispatch('getBuyerInformationByID', currentBuyerID);
       context.commit('SET_CURRENT_BUYER', payload);
+      context.commit('SET_PRODUCTS_BY_TRANSACTION', []);
+      context.commit('SET_CURRENT_IP', '');
+      context.commit('SET_BUYERS_BY_IP', []);
     },
     async getBuyerInformationByID(context, currentBuyerID) {
       try {

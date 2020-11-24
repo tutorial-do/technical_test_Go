@@ -1,5 +1,8 @@
 <template>
-  <v-card>
+  <v-card
+  :loading=loadingStatus
+  :disabled=loadingStatus
+  >
     <v-card-text>
       <h1>All Buyers</h1>
     </v-card-text>
@@ -8,22 +11,26 @@
       :items="data"
       :items-per-page="5"
     >
-    <template v-slot:item.select="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="setterBuyer(item.name, item.id, item.age)"
-      >
-        Select to display
-      </v-icon>
-    </template>
+      <template v-slot:item.select="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="setterBuyer(item.name, item.id, item.age)"
+          >
+            Select to display
+          </v-icon>
+      </template>
     </v-data-table>
   </v-card>
 </template>
 <script>
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'BuyersByIP',
+  components: {
+  },
   props: {
     data: {
       type: [Array, String],
@@ -44,8 +51,12 @@ export default {
         { text: 'Age', value: 'age' },
         { text: 'Selector', value: 'select', sortable: false },
       ],
+      loaded: false,
     };
   },
+  computed: mapState({
+    loadingStatus: (state) => state.loadingStatus,
+  }),
   methods: {
     setterBuyer(BuyerName, BuyerID, BuyerAge) {
       this.$store.dispatch('setCurrentBuyer', {
