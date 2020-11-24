@@ -79,8 +79,6 @@ func ConnectData(dbClient *dgo.Dgraph, dataBuyers []models.Buyer, dataProducts [
 func linkCreatorBuyers(dbClient *dgo.Dgraph, buyerIDs []string) error {
 	var upsertQuery bytes.Buffer
 
-	fmt.Println("Entre a Linker de Buyers")
-
 	upsertQuery.WriteString("query {")
 
 	var upsertMutation []*api.Mutation
@@ -116,8 +114,6 @@ func linkCreatorBuyers(dbClient *dgo.Dgraph, buyerIDs []string) error {
 func linkCreatorProducts(dbClient *dgo.Dgraph, productIDs []string) error {
 	var upsertQuery bytes.Buffer
 
-	fmt.Println("Entre a Linker de Products")
-
 	upsertQuery.WriteString("query {")
 
 	var upsertMutation []*api.Mutation
@@ -147,5 +143,15 @@ func linkCreatorProducts(dbClient *dgo.Dgraph, productIDs []string) error {
 		return err
 	}
 
+	return nil
+}
+
+// DropData function to delete all data from the database but not the schema
+func DropData(dbClient *dgo.Dgraph) error {
+	op := api.Operation{DropOp: api.Operation_DATA}
+	err := dbClient.Alter(context.Background(), &op)
+	if err != nil {
+		return err
+	}
 	return nil
 }

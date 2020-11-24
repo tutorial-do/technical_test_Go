@@ -200,3 +200,13 @@ func GetAllTransactions(dgraphClient *dgo.Dgraph) http.HandlerFunc {
 		}
 	}
 }
+
+// DeleteAllData function to delete all data from the database but not the schema
+func DeleteAllData(dgraphClient *dgo.Dgraph) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := storage.DropData(dgraphClient)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}

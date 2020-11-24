@@ -16,3 +16,14 @@ func TestNewBuyer(t *testing.T) {
 	c.Equal(28, buyer.Age)
 	c.NoError(err)
 }
+
+// func TestNewChannelErrors(t *testing.T) {
+// 	c := require.New(t)
+
+// 	_, err := NewBuyer("BYR1", "Julian", 28)
+// 	c.Equal(ErrEmptyDescription, err)
+// 	_, err = NewBuyer("BYR1", "Julian", 28)
+// 	c.Equal(ErrEmptyTitle, err)
+// 	_, err = NewBuyer("BYR1", "Julian", 28)
+// 	c.Equal(ErrEmptyCreatorID, err)
+// }

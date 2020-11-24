@@ -51,6 +51,9 @@ func main() {
 	router.Route("/alltransactions", func(r chi.Router) {
 		r.Get("/", routes.GetAllTransactions(dbConnection))
 	})
+	router.Route("/deleteall", func(r chi.Router) {
+		r.Delete("/", routes.DeleteAllData(dbConnection))
+	})
 
 	defer dbclose()
 
