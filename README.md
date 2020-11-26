@@ -5,8 +5,7 @@ technical test in Golang for a recruiting process
 
 ## Architecture
 
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/53787841/100014959-2d6e7700-2da5-11eb-9a88-ac762792c110.png">
-
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/53787841/100375008-25981800-2fdb-11eb-9e46-eaf8af71862c.png">
 
 ## Data model
 
