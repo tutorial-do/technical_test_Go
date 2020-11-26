@@ -17,6 +17,10 @@ Technical test in Golang a Vuejs for a recruiting process
 
 <img width="300" alt="image" src="https://user-images.githubusercontent.com/53787841/100007872-b502b880-2d9a-11eb-8c52-7c0252d7bdb4.png">
 
+## Relationship between data
+
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/53787841/100381278-aa3c6380-2fe6-11eb-8be3-b018d01a11c8.png">
+
 ## Project setup - Backend
 
 ### First, grab the latest version of Docker.
