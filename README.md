@@ -1,5 +1,13 @@
-# Technical test in Golang and Vue 
-technical test in Golang for a recruiting process
+# Client Tracker - Technical test in Golang and Vue 
+
+Web application to visualize information about customers' transactions. 
+* Fetching information from 3 different endpoints that were given, each of them in a different format: Buyer in JSON format, Products in CSV format, and Transaction in No Standard format.
+* First loading the Schema of the database with an Alter, then saving the data in Dgraph database using mutations, connecting the data with an Upsert, and finally making queries to retrieve the data a expose it to different endpoints to be consumed from the frontend.
+* Then, from the frontend consuming the endpoints and displaying the information in a Dashboard, that allows you to interact with the data visualizing buyers, products, and transactions.
+
+
+
+technical test in Golang a Vuejs for a recruiting process
 
 <img width="200" alt="ClientTracker" src="https://user-images.githubusercontent.com/53787841/100001129-a7483580-2d90-11eb-8274-6fcbdd062ec4.png">
 
